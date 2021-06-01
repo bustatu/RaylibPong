@@ -3,16 +3,13 @@
 int main() {
     
     // Initialization
-    int screenWidth = 800;
-    int screenHeight = 450;
-
     raylib::Color textColor(LIGHTGRAY);
-    raylib::Window w(screenWidth, screenHeight, "Raylib C++ Starter Kit Example");
+    raylib::Window win(960, 540, "Raylib C++ Starter Kit Example");
     
     SetTargetFPS(60);
 
     // Main game loop
-    while (!w.ShouldClose()) // Detect window close button or ESC key
+    while (!win.ShouldClose()) // Detect window close button or ESC key
     {
         // Update
 
@@ -21,7 +18,7 @@ int main() {
         // Draw
         BeginDrawing();
         ClearBackground(RAYWHITE);
-        textColor.DrawText("Congrats! You created your first window!", 190, 200, 20);
+        textColor.DrawText("Congrats! You created your first window!", 180, 255, 30);
         EndDrawing();
     }
 
