@@ -9,16 +9,29 @@ ScoreHolder score;
 // Left and right player controllers
 PlayerController *pLeft = nullptr, *pRight = nullptr;
 
+// Ball handler
+Ball *b = nullptr;
+
 // Deletes palettes
 void deletePalettes()
 {
 	// Check if palettes exist and if so, delete
 	if(pLeft != nullptr) delete pLeft;
-	if(pRight != nullptr) delete pRight;	
+	if(pRight != nullptr) delete pRight;
 }
 
-// Resets game state meanwhile keeping the score
-void resetState()
+// Creates ball
+void createBall()
+{
+	// Check ball existence
+	if(b != nullptr) delete b;
+
+	// Create ball
+	b = new Ball(pLeft, pRight);
+}
+
+// Creates palettes
+void createPalettes()
 {
 	// Delete old palettes before creating new ones
 	deletePalettes();
@@ -27,22 +40,20 @@ void resetState()
 	pLeft = new PlayerController();
 	pLeft -> setX(5);
 	pLeft -> setY(225);
-	pLeft -> setW(15);
-	pLeft -> setH(90);
-	pLeft -> setSpeed(400);
-	pLeft -> setColor(WHITE);
 	pLeft -> setKeyDOWN(KEY_S);
 	pLeft -> setKeyUP(KEY_W);
 
 	pRight = new PlayerController();
 	pRight -> setX(940);
 	pRight -> setY(225);
-	pRight -> setW(15);
-	pRight -> setH(90);
-	pRight -> setSpeed(400);
-	pRight -> setColor(WHITE);
 	pRight -> setKeyDOWN(KEY_DOWN);
 	pRight -> setKeyUP(KEY_UP);
+}
+
+// Resets game state meanwhile keeping the score
+void resetState()
+{
+	createBall();
 }
 
 void Init()
@@ -53,11 +64,17 @@ void Init()
 	// Create window
     InitWindow(960, 540, "Raylib Pong");
 
-	// Reset game state
-	resetState();
-
 	// Set FPS drawer values
 	f.setKey(KEY_F3);
+
+	// Set seed for RNG
+	srand(time(NULL));
+
+	// Create stuff
+	createPalettes();
+
+	// Reset game state
+	resetState();
 }
 
 void Update(double dt)
@@ -65,6 +82,17 @@ void Update(double dt)
 	// Update palettes
 	pLeft -> update(dt);
 	pRight -> update(dt);
+
+	// Update ball
+	b -> update(dt);
+
+	if(b -> hasHitEnd != 0)
+	{
+		if(b -> hasHitEnd == 1) score.incrementLeft();
+		else score.incrementRight();
+
+		resetState();
+	}
 
 	// Update fps drawer
 	f.update();
@@ -80,6 +108,9 @@ void Draw()
 
 	// Draw score
 	score.draw();
+
+	// Draw ball
+	b -> draw();
 
 	// Draw palettes
 	pLeft -> draw();

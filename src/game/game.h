@@ -1,8 +1,9 @@
 #ifndef GAME_H
 #define GAME_H
 
-// Raylib is used
+// All headers used
 #include <raylib-cpp.hpp>
+#include <time.h>
 
 // Game-related headers
 #include "player.h"
@@ -31,7 +32,7 @@ class ScoreHolder
 {
 	private:
 		int left = 0, right = 0;
-		int lineCount = 54;
+		int lineCount = 50;
 	
 	public:
 		void incrementLeft() {left++;}
@@ -43,10 +44,9 @@ class ScoreHolder
 			output = convertResult(right);
 			DrawText(output.c_str(), 720 - MeasureText(output.c_str(), 100) / 2, 10, 100, WHITE);
 
+			// Draw middle lines
 			for(int i = 0; i < 2 * lineCount; i+=2)
-			{
 				DrawRectangle(479, (270.0 / lineCount) * i, 2, 270.0 / lineCount, WHITE);
-			}
 		}
 };
 
