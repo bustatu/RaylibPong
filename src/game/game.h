@@ -20,13 +20,6 @@ void Draw();
 // Main end function
 void End();
 
-std::string convertResult(int result)
-{
-	if(result <= 9)
-		return "0" + std::to_string(result);
-	return std::to_string(result);
-}
-
 // Holds scores and draws middle line
 class ScoreHolder
 {
@@ -37,17 +30,7 @@ class ScoreHolder
 	public:
 		void incrementLeft() {left++;}
 		void incrementRight() {right++;}
-		void draw()
-		{
-			std::string output = convertResult(left);
-			DrawText(output.c_str(), 240 - MeasureText(output.c_str(), 100) / 2, 10, 100, WHITE);
-			output = convertResult(right);
-			DrawText(output.c_str(), 720 - MeasureText(output.c_str(), 100) / 2, 10, 100, WHITE);
-
-			// Draw middle lines
-			for(int i = 0; i < 2 * lineCount; i+=2)
-				DrawRectangle(479, (270.0 / lineCount) * i, 2, 270.0 / lineCount, WHITE);
-		}
+		void draw();
 };
 
 // Draws FPS
