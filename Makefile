@@ -13,47 +13,25 @@ compileFlags := -std=c++17 -I include
 linkFlags = -L lib/$(platform) -l raylib
 
 # Check for Windows
+# Add -mwindows to remove terminal
 ifeq ($(OS), Windows_NT)
 	# Set Windows macros
 	platform := Windows
 	CXX ?= g++
-	linkFlags += -Wl,--allow-multiple-definition -pthread -lopengl32 -lgdi32 -lwinmm -mwindows -static -static-libgcc -static-libstdc++
+	linkFlags += -Wl,--allow-multiple-definition -pthread -lopengl32 -lgdi32 -lwinmm -static -static-libgcc -static-libstdc++
 	libGenDir := src
 	THEN := &&
 	PATHSEP := \$(BLANK)
 	MKDIR := -mkdir -p
-	RM := -del /q
+	RM := -del /q /s
 	COPY = -robocopy "$(call platformpth,$1)" "$(call platformpth,$2)" $3
-else
-	# Check for MacOS/Linux
-	UNAMEOS := $(shell uname)
-	ifeq ($(UNAMEOS), Linux)
-		# Set Linux macros
-		platform := Linux
-		CXX ?= g++
-		linkFlags += -l GL -l m -l pthread -l dl -l rt -l X11
-	endif
-	ifeq ($(UNAMEOS), Darwin)
-		# Set macOS macros
-		platform := macOS
-		CXX ?= clang++
-		linkFlags += -framework CoreVideo -framework IOKit -framework Cocoa -framework GLUT -framework OpenGL
-		libGenDir := src
-	endif
-
-	# Set UNIX macros
-	THEN := ;
-	PATHSEP := /
-	MKDIR := mkdir -p
-	RM := rm -rf
-	COPY = cp $1$(PATHSEP)$3 $2
 endif
 
 # Lists phony targets for Makefile
 .PHONY: all setup submodules execute clean
 
 # Default target, compiles, executes and cleans
-all: $(target) # execute clean
+all: $(target) execute clean
 
 # Sets up the project for compiling, generates includes and libs
 setup: include lib
@@ -93,4 +71,4 @@ execute:
 
 # Clean up all relevant files
 clean:
-	$(RM) $(call platformpth, $(buildDir)/*)
+	$(RM) $(call platformpth, $(buildDir)/**)

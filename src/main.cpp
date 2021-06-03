@@ -1,26 +1,26 @@
-#include <raylib-cpp.hpp>
+// Small game for now, can manage with just a header
+#include "game/game.h"
 
 int main() {
     
     // Initialization
-    raylib::Color textColor(LIGHTGRAY);
-    raylib::Window win(960, 540, "Raylib C++ Starter Kit Example");
-    
-    SetTargetFPS(60);
+    Init();
 
     // Main game loop
-    while (!win.ShouldClose()) // Detect window close button or ESC key
+    while(!WindowShouldClose()) // Detect window close button or ESC key
     {
         // Update
-
-        // TODO: Update your variables here
+        Update(GetFrameTime());
 
         // Draw
         BeginDrawing();
-        ClearBackground(RAYWHITE);
-        textColor.DrawText("Congrats! You created your first window!", 180, 255, 30);
+
+        Draw();
+    
         EndDrawing();
     }
+
+    End();
 
     return 0;
 }
