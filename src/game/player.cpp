@@ -27,8 +27,8 @@ void Ball::update(double dt)
 		comp_x = -comp_x;
 		speed += 5;
 	}
-	if(mainRect.x == 0) hasHitEnd = 1;
-	if(mainRect.x == 960 - mainRect.width) hasHitEnd = 2;
+	if(mainRect.x == 0) hasHitEnd = 2;
+	if(mainRect.x == 960 - mainRect.width) hasHitEnd = 1;
 }
 
 #pragma endregion
