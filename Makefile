@@ -22,7 +22,7 @@ ifeq ($(OS), Windows_NT)
 	libGenDir := src
 	THEN := &&
 	PATHSEP := \$(BLANK)
-	MKDIR := -mkdir -p
+	MKDIR := -mkdir
 	RM := -del /q /s
 	COPY = -robocopy "$(call platformpth,$1)" "$(call platformpth,$2)" $3
 	else
@@ -94,4 +94,4 @@ execute:
 
 # Clean up all relevant files
 clean:
-	$(RM) $(call platformpth, $(buildDir)/**)
+	$(RM) $(call platformpth, $(buildDir)/*)

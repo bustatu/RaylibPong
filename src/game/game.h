@@ -19,15 +19,56 @@ void Draw();
 // Main end function
 void End();
 
-// Holds scores
+std::string convertResult(int result)
+{
+	if(result <= 9)
+		return "0" + std::to_string(result);
+	return std::to_string(result);
+}
+
+// Holds scores and draws middle line
 class ScoreHolder
 {
 	private:
 		int left = 0, right = 0;
+		int lineCount = 54;
 	
 	public:
 		void incrementLeft() {left++;}
 		void incrementRight() {right++;}
+		void draw()
+		{
+			std::string output = convertResult(left);
+			DrawText(output.c_str(), 240 - MeasureText(output.c_str(), 100) / 2, 10, 100, WHITE);
+			output = convertResult(right);
+			DrawText(output.c_str(), 720 - MeasureText(output.c_str(), 100) / 2, 10, 100, WHITE);
+
+			for(int i = 0; i < 2 * lineCount; i+=2)
+			{
+				DrawRectangle(479, (270.0 / lineCount) * i, 2, 270.0 / lineCount, WHITE);
+			}
+		}
+};
+
+// Draws FPS
+class FPSDrawer
+{
+	private:
+		bool toggle = false;
+		int key;
+
+	public:
+		void setKey(int newKey) {key = newKey;}
+		void update()
+		{
+			if(IsKeyPressed(key))
+				toggle = !toggle;
+		}
+		void draw()
+		{
+			if(toggle)
+				DrawFPS(0, 0);
+		}
 };
 
 #endif

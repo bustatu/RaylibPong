@@ -1,5 +1,11 @@
 #include "game.h"
 
+// Draws FPS
+FPSDrawer f;
+
+// Holds the score
+ScoreHolder score;
+
 // Left and right player controllers
 PlayerController *pLeft = nullptr, *pRight = nullptr;
 
@@ -49,6 +55,9 @@ void Init()
 
 	// Reset game state
 	resetState();
+
+	// Set FPS drawer values
+	f.setKey(KEY_F3);
 }
 
 void Update(double dt)
@@ -57,14 +66,20 @@ void Update(double dt)
 	pLeft -> update(dt);
 	pRight -> update(dt);
 
-	// Update titlebar to show FPS
-	SetWindowTitle(("Raylib Pong (FPS:" + std::to_string(int(1.0 / dt)) + ")").c_str());
+	// Update fps drawer
+	f.update();
 }
 
 void Draw()
 {
 	// Set background color
 	ClearBackground(BLACK);
+
+	// Draw FPS
+	f.draw();
+
+	// Draw score
+	score.draw();
 
 	// Draw palettes
 	pLeft -> draw();
